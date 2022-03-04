@@ -1,0 +1,52 @@
+---
+title: "Bachelor"
+author: "Anh Thu"
+date: "11/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(circlize)
+library(networkD3)
+```
+
+```{r}
+links <- data.frame(
+  source = c("B1","B1","New","B2","B2","B2","New","EX","B3","B3","B3"),
+  target = c("B2","Drop","B2","B3","CY","Drop","B3","B3","Ex-Sw","Ex-B","Ex-G"),
+  value = c(17,9,1,12,5,1,1,5,5,6,2)
+)
+```
+
+```{r}
+nodes <- data.frame(name = c(as.character(links$source), as.character(links$target)) %>% unique())
+links$ID.source <- match(links$source, nodes$name) - 1
+links$ID.target <- match(links$target, nodes$name) - 1
+```
+
+
+```{r}
+p <- sankeyNetwork(Links = links, Nodes = nodes, Source = "ID.source", Target = "ID.target", Value = "value", NodeID = "name", sinksRight = FALSE, fontSize = 12)
+
+
+
+p
+```
+```{r}
+temp_graph <- graph.data.frame(links)
+adjaceny.matrix <- get.adjacency(temp_graph, sparse = FALSE, attr= "value")
+
+
+
+chordDiagram(adjaceny.matrix, transparency = 0.80, scale = TRUE, small.gap = 100)
+```
+

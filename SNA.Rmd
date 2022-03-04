@@ -1,0 +1,411 @@
+---
+title: "SNA"
+author: "Anh Thu"
+date: "11/30/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Load library
+library(readr)
+library(igraph)
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+library(networkD3)
+library(gapminder)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(circlize)
+library(scales)
+```
+
+```{r}
+Auditions_db_comp <- read_csv("dataset/Auditions.db.comp.csv",locale = locale(encoding = "ISO-8859-1"))
+```
+#Simple SNA
+##Create a subset of the dataset
+```{r}
+#2017
+inter17 <- Auditions_db_comp[(Auditions_db_comp$year ==2017) & (Auditions_db_comp$status =="interne"), ]
+exter17 <- Auditions_db_comp[(Auditions_db_comp$year ==2017) & (Auditions_db_comp$status =="externe"), ]
+
+#2018
+inter18 <- Auditions_db_comp[(Auditions_db_comp$year ==2018) & (Auditions_db_comp$status =="interne"), ]
+exter18 <- Auditions_db_comp[(Auditions_db_comp$year ==2018) & (Auditions_db_comp$status =="externe"), ]
+
+#2019
+inter19 <- Auditions_db_comp[(Auditions_db_comp$year ==2019) & (Auditions_db_comp$status =="interne"), ]
+exter19 <- Auditions_db_comp[(Auditions_db_comp$year ==2019) & (Auditions_db_comp$status =="externe"), ]
+
+#2020
+inter20 <- Auditions_db_comp[(Auditions_db_comp$year ==2020) & (Auditions_db_comp$status =="interne"), ]
+exter20 <- Auditions_db_comp[(Auditions_db_comp$year ==2020) & (Auditions_db_comp$status =="externe"), ]
+```
+
+##Bipartite 2017
+```{r}
+inter17_g <- inter17 %>% select(n_poste, Name)
+# g_i17 <- graph.data.frame(inter17_g, directed = FALSE)
+# plot(g_i17, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+i17_g <- graph.data.frame(inter17_g, directed=FALSE)
+i17_b <- bipartite.mapping(i17_g)
+V(i17_g)$type <- bipartite_mapping(i17_g)$type
+V(i17_g)$color <- ifelse(V(i17_g)$type, "lightblue", "yellow")
+V(i17_g)$shape <- ifelse(V(i17_g)$type, "circle", "square")
+E(i17_g)$color <- "black"
+plot(i17_g,vertex.label = NA, vertex.size =5, vertex.size =5, main ='Internal Network in 2017')
+```
+
+```{r}
+exter17_g <- exter17 %>% select(n_poste, Name)
+# g_e17 <- graph.data.frame(exter17_g, directed = FALSE)
+# plot(g_e17, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+e17_g <- graph.data.frame(exter17_g, directed=FALSE)
+e17_b <- bipartite.mapping(e17_g)
+V(e17_g)$type <- bipartite_mapping(e17_g)$type
+V(e17_g)$color <- ifelse(V(e17_g)$type, "lightblue", "yellow")
+V(e17_g)$shape <- ifelse(V(e17_g)$type, "circle", "square")
+E(e17_g)$color <- "black"
+plot(e17_g,vertex.label = NA, vertex.size =5, main ='External Network in 2017')
+```
+
+##Bipartite 2018
+```{r}
+inter18_g <- inter18 %>% select(n_poste, Name)
+# g_i18 <- graph.data.frame(inter18_g, directed = FALSE)
+# plot(g_i18, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+i18_g <- graph.data.frame(inter18_g, directed=FALSE)
+i18_b <- bipartite.mapping(i18_g)
+V(i18_g)$type <- bipartite_mapping(i18_g)$type
+V(i18_g)$color <- ifelse(V(i18_g)$type, "lightblue", "yellow")
+V(i18_g)$shape <- ifelse(V(i18_g)$type, "circle", "square")
+E(i18_g)$color <- "lightgray"
+plot(i18_g,vertex.label = NA, vertex.size =5)
+```
+
+
+```{r}
+exter18_g <- exter18 %>% select(n_poste, Name)
+# g_e18 <- graph.data.frame(exter18_g, directed = FALSE)
+# plot(g_e18, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+e18_g <- graph.data.frame(exter18_g, directed=FALSE)
+e18_b <- bipartite.mapping(e18_g)
+V(e18_g)$type <- bipartite_mapping(e18_g)$type
+V(e18_g)$color <- ifelse(V(e18_g)$type, "lightblue", "yellow")
+V(e18_g)$shape <- ifelse(V(e18_g)$type, "circle", "square")
+E(e18_g)$color <- "lightgray"
+plot(e18_g,vertex.label = NA, vertex.size =5)
+```
+
+
+##Bipartite 2019
+```{r}
+inter19_g <- inter19 %>% select(n_poste, Name)
+# g_i19 <- graph.data.frame(inter19_g, directed = FALSE)
+# plot(g_i19, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+
+```{r}
+i19_g <- graph.data.frame(inter19_g, directed=FALSE)
+i19_b <- bipartite.mapping(i19_g)
+V(i19_g)$type <- bipartite_mapping(i19_g)$type
+V(i19_g)$color <- ifelse(V(i19_g)$type, "lightblue", "yellow")
+V(i19_g)$shape <- ifelse(V(i19_g)$type, "circle", "square")
+E(i19_g)$color <- "lightgray"
+plot(i19_g,vertex.label = NA, vertex.size =5)
+```
+
+
+```{r}
+exter19_g <- exter19 %>% select(n_poste, Name)
+# g_e19 <- graph.data.frame(exter19_g, directed = FALSE)
+# plot(g_e19, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+e19_g <- graph.data.frame(exter19_g, directed=FALSE)
+e19_b <- bipartite.mapping(e19_g)
+V(e19_g)$type <- bipartite_mapping(e19_g)$type
+V(e19_g)$color <- ifelse(V(e19_g)$type, "lightblue", "yellow")
+V(e19_g)$shape <- ifelse(V(e19_g)$type, "circle", "square")
+E(e19_g)$color <- "lightgray"
+plot(e19_g,vertex.label = NA, vertex.size =5)
+```
+
+
+##Bipartite 2020
+```{r}
+inter20_g <- inter20 %>% select(n_poste, Name)
+# g_i20 <- graph.data.frame(inter20_g, directed = FALSE)
+# plot(g_i20, vertex.label = NA, vertex.size = 5, vertex.color = 'red')
+```
+
+```{r}
+i20_g <- graph.data.frame(inter20_g, directed=FALSE)
+i20_b <- bipartite.mapping(i20_g)
+V(i20_g)$type <- bipartite_mapping(i20_g)$type
+V(i20_g)$color <- ifelse(V(i20_g)$type, "lightblue", "yellow")
+V(i20_g)$shape <- ifelse(V(i20_g)$type, "circle", "square")
+E(i20_g)$color <- "lightgray"
+plot(i20_g,vertex.label = NA, vertex.size =5)
+```
+
+
+```{r}
+exter20_g <- exter20 %>% select(n_poste, Name)
+# g_e20 <- graph.data.frame(exter20_g, directed = FALSE)
+# col <- c("red", "yellow")
+# plot(g_e20,vertex.label = NA, vertex.size = 5, vertex.color = col)
+```
+
+
+```{r}
+e20_g <- graph.data.frame(exter20_g, directed=FALSE)
+e20_b <- bipartite.mapping(e20_g)
+V(e20_g)$type <- bipartite_mapping(e20_g)$type
+V(e20_g)$color <- ifelse(V(e20_g)$type, "lightblue", "yellow")
+V(e20_g)$shape <- ifelse(V(e20_g)$type, "circle", "square")
+E(e20_g)$color <- "black"
+plot(e20_g, vertex.label = NA, vertex.size =5,edge.size =20)
+```
+
+
+```{r}
+b <- head(inter20, n=50)
+```
+
+
+```{r}
+b_g <- graph.data.frame(b, directed=FALSE)
+b_b <- bipartite.mapping(b_g)
+V(b_g)$type <- bipartite_mapping(b_g)$type
+V(b_g)$color <- ifelse(V(b_g)$type, "lightblue", "yellow")
+V(b_g)$shape <- ifelse(V(b_g)$type, "circle", "square")
+E(b_g)$color <- "lightgray"
+plot(b_g, layout=layout.bipartite, vertex.size=10, vertex.label= NA)
+```
+
+##Interactive graph
+```{r}
+# Use igraph to make the graph and find membership
+clwt <- cluster_walktrap(i17_g)
+members <- membership(clwt)
+# Convert to object suitable for networkD3
+in17_d3 <- igraph_to_networkD3(i17_g, group = members)
+# head(in17_d3)
+```
+```{r}
+# Create force directed network plot
+forceNetwork(
+Links = in17_d3$links,
+Nodes = in17_d3$nodes,
+Source = 'source',
+Target = 'target',
+NodeID = 'name',
+Group = 'group'
+)
+```
+
+```{r}
+exter17_edge_list <- exter17 %>% select(n_poste, ID) %>%
+  inner_join(., select(., n_poste, ID), by = "n_poste") %>%
+  rename(ID1 = ID.x, ID2 = ID.y) %>%
+  filter(ID1 != ID2) %>%
+  unique %>%
+  arrange(n_poste)
+head(exter17_edge_list)
+```
+```{r}
+# Plot
+simpleNetwork(exter17_edge_list[c('ID1', 'ID2')])  %>%
+saveNetwork(file = 'graphs/exter17_edge_list_id.html')
+```
+
+```{r}
+exter17_edge_list_name <- exter17 %>% select(Level, n_poste, Name) %>%
+  inner_join(., select(., n_poste, Name), by = "n_poste") %>%
+  rename(Name1 = Name.x, Name2 = Name.y) %>%
+  filter(Name1 != Name2) %>%
+  unique %>%
+  arrange(n_poste)
+head(exter17_edge_list_name)
+```
+
+```{r}
+# Plot
+simpleNetwork(exter17_edge_list_name[c('Name1', 'Name2')])  %>%
+saveNetwork(file = 'graphs/exter17_edge_list_name.html')
+```
+
+```{r}
+exter17_matrix_name <- as.matrix(exter17_edge_list_name[c('Name1', 'Name2')]) 
+```
+
+```{r}
+exter17$Level <- as.factor(exter17$Level)
+g17 <- graph_from_edgelist(exter17_matrix_name, directed = FALSE)
+plot(g17,
+     vertex.label = NA, vertex.size = 8, vertex.color = exter17$Level)
+```
+
+
+```{r}
+inter17_edge_list_name <- inter17 %>% select(Level, n_poste, Name) %>%
+  inner_join(., select(., n_poste, Name), by = "n_poste") %>%
+  rename(Name1 = Name.x, Name2 = Name.y) %>%
+  filter(Name1 != Name2) %>%
+  unique %>%
+  arrange(n_poste)
+head(inter17_edge_list_name)
+```
+
+```{r}
+inter17_matrix_name <- as.matrix(inter17_edge_list_name[c('Name1', 'Name2')])
+```
+
+
+```{r}
+inter17$Level <- as.factor(inter17$Level)
+g17 <- graph_from_edgelist(inter17_matrix_name, directed = FALSE)
+plot(g17,
+     vertex.label = NA, vertex.size = 8, vertex.color = inter17$Level)
+```
+
+## Community Detection - 2017
+```{r}
+set.seed(2680)
+cl_i17 <- cluster_louvain(i17_g )
+communities = as.data.frame(communities(cl_i17))[,1]
+vector <- character(length(communities))
+for (i in 1:length(communities)) {
+    vector[i] = unlist(communities[i])[1]
+}
+
+plot(cl_i17, i17_g,
+     vertex.size = 5,
+     vertex.label.cex = 1,
+     vertex.label = NA,
+     main = "Community Detection - Thesis Internal Network in 2017",
+    )
+```
+
+```{r}
+set.seed(2680)
+cl_e17 <- cluster_louvain(e17_g )
+communities = as.data.frame(communities(cl_e17))[,1]
+vector <- character(length(communities))
+for (i in 1:length(communities)) {
+    vector[i] = unlist(communities[i])[1]
+}
+
+plot(cl_e17, e17_g,
+     vertex.size = 5,
+     vertex.label.cex = 1,
+     vertex.label = NA,
+     main = "Community Detection - Thesis External Network in 2017",
+    )
+```
+
+## Community Detection - External all the years
+```{r}
+exter <- Auditions_db_comp[(Auditions_db_comp$status =="externe"), ]
+ex <- exter %>% select(n_poste, Name, year)
+ex_g <- graph.data.frame(ex, directed=FALSE)
+set.seed(2680)
+cl_ex <- cluster_louvain(ex_g )
+communities = as.data.frame(communities(cl_ex))[,1]
+vector <- character(length(communities))
+for (i in 1:length(communities)) {
+    vector[i] = unlist(communities[i])[1]
+}
+
+plot(cl_ex, ex_g,
+     vertex.size = 5,
+     vertex.label.cex = 1,
+     vertex.label = NA,
+     main = "Thesis External Network",
+    )
+```
+##Betweenness
+```{r}
+exter17_edge_list_name <- exter17 %>% select(Level, n_poste, Name) %>%
+  inner_join(., select(., n_poste, Name), by = "n_poste") %>%
+  rename(Name1 = Name.x, Name2 = Name.y) %>%
+  filter(Name1 != Name2) %>%
+  unique %>%
+  arrange(n_poste)
+
+exter17_matrix_name <- as.matrix(exter17_edge_list_name[c('Name1', 'Name2')]) 
+g17 <- graph_from_edgelist(exter17_matrix_name, directed = FALSE)
+plot(g17,vertex.label = NA, vertex.size = betweenness(g17)*0.003,edge.size=1, vertex.color = "red", main = "Betweenness centrality of external juries in 2017")
+```
+
+```{r}
+inter17_edge_list_name <- inter17 %>% select(Level, n_poste, Name) %>%
+  inner_join(., select(., n_poste, Name), by = "n_poste") %>%
+  rename(Name1 = Name.x, Name2 = Name.y) %>%
+  filter(Name1 != Name2) %>%
+  unique %>%
+  arrange(n_poste)
+
+inter17_matrix_name <- as.matrix(inter17_edge_list_name[c('Name1', 'Name2')]) 
+g17_i <- graph_from_edgelist(inter17_matrix_name, directed = FALSE)
+plot(g17_i,vertex.label = NA, vertex.size = betweenness(g17_i)*0.3,edge.size=1, vertex.color = "red", main = "Betweenness centrality of internal juries in 2017")
+```
+## Strength
+```{r}
+plot(g17,vertex.label = NA, vertex.size = 4,edge.size=strength(g17)*0.5, vertex.color = "red", main = "Edge's strength centrality of external juries in 2017")
+```
+```{r}
+plot(g17_i,vertex.label = NA, vertex.size = 4,edge.size=strength(g17_i)*0.5, vertex.color = "red", main = "Edge's strength centrality of internal juries in 2017")
+```
+
+
+#Sankey diagram and Chord plot
+
+```{r}
+links <- data.frame(
+  source = c("B1","B1","New","B2","B2","B2","New","EX","B3","B3","B3"),
+  target = c("B2","Drop","B2","B3","CY","Drop","B3","B3","Ex-Sw","Ex-B","Ex-G"),
+  value = c(17,9,1,12,5,1,1,5,5,6,2)
+)
+```
+
+```{r}
+nodes <- data.frame(name = c(as.character(links$source), as.character(links$target)) %>% unique())
+links$ID.source <- match(links$source, nodes$name) - 1
+links$ID.target <- match(links$target, nodes$name) - 1
+```
+
+##Sankey
+
+```{r}
+sankeyNetwork(Links = links, Nodes = nodes, Source = "ID.source", Target = "ID.target", Value = "value", NodeID = "name", sinksRight = FALSE, fontSize = 12)
+```
+##Chord plot
+```{r}
+c <- graph.data.frame(links)
+adjaceny.matrix <- get.adjacency(c, sparse = FALSE, attr= "value")
+chordDiagram(adjaceny.matrix, transparency = 0.80, scale = TRUE, small.gap = 100)
+```
+
+
